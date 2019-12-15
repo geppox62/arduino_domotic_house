@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<title>La casa del futuro</title>
+		<link   type="text/css" rel="stylesheet" href="style.css" media="screen" />
+		<script type="text/javascript" src="ajax.js"></script>
+    </head>
+    <body onload="GetArduinoIO()">
+    <div>
+        <p id="titolo">La casa del futuro</p>
+
+		<div class="Lucibox">
+			<p id="luc">LUCI <img src="lamp.png" width="40px" class="img" /></p>
+				<form id="check_LEDs" name="LED_form">
+					<input type="checkbox" name="camera" value="0" onclick="GetCheck()" />Camera<br /><br />
+					<input type="checkbox" name="cucina" value="0" onclick="GetCheck()" />Cucina<br /><br />
+					<input type="checkbox" name="soggiorno" value="0" onclick="GetCheck()" />Soggiorno<br /><br />
+					<input type="checkbox" name="bagno" value="0" onclick="GetCheck()" />Bagno<br /><br />
+					<input type="checkbox" name="disimpegno" value="0" onclick="GetCheck()" />Disimpegno<br /><br />
+					<input type="checkbox" name="garage" value="0" onclick="GetCheck()" />Garage<br /><br />
+					<button type="button" id="spegni_tutto" class="bottone" onclick="SpegniTutto()">SPEGNI TUTTE LE LUCI</button><br /><br />
+				</form>
+		</div>
+		<div class="Sensoribox">
+			<p id="sens">SENSORI <img src="sensor.png" width="40px" class="img" /></p>
+			<p>TEMPERATURA: <span class="temperatura">...</span></p>
+			<p><span class="crepuscolari">...</span></p>
+			<button type="button" id="intrusione" class="bottone" onclick="GetIntrusione()">ALLARME OFF</button>
+			<p><span class="movimento">...</span></p>
+			<button type="button" id="riscaldamento" class="bottone" onclick="GetRiscaldamento()">RISCALDAMENTO OFF</button></br></br>
+			<button type="button" id="condizionamento" class="bottone" onclick="GetCondizionamento()">CONDIZIONAMENTO OFF</button><br />
+			<p class="termostato">TERMOSTATO:
+			<form id="someform" class="term">
+				<select id="select_val" onChange="GetTermostato()">
+					<option>16</option>
+					<option>17</option>
+					<option>18</option>
+					<option>19</option>
+					<option>20</option>
+					<option>21</option>
+					<option>22</option>
+					<option>23</option>
+					<option>24</option>
+					<option>25</option>
+					<option>26</option>
+					<option>27</option>
+					<option>28</option>
+					<option>29</option>
+					<option>30</option>
+					<option>31</option>
+					<option>32</option>
+					<option>33</option>
+					<option>34</option>
+				</select>
+			</form>
+			</p>
+			<button type="button" id="serranda" class="bottone" onclick="GetSerranda()">SERRANDA GARAGE CHIUSA</button><br /><br />
+			<button type="button" id="buzzer" class="bottone" onclick="GetBuzzer()">SPEGNI CICALINO</button><br />
+			<p><span class="gas">...</span></p>
+		</div>
+	</div>
+    </body>
+</html>
