@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Fishino Alby project</title>
+	<script>
+		strL1 = ""; strL2 = ""; strL3 = ""; strL4 = ""; strL5 = ""; strL6 = "";
+		strS1 = ""; strS2 = ""; strS3 = ""; strS4 = ""; strS5 = ""; strS6 = "";
+		valTerm = 23;
+		var Stato_intrusione = false;
+		var Stato_riscaldamento = false;
+		var Stato_condizionamento = false;
+		var Stato_serranda = false;
+		var Stato_buzzer = false;
+		function GetArduinoIO() {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					if (this.response != null) {
+						var json = JSON.parse(xhttp.responseText);
+						// Ho ricevuto il record in formato JSON con i dati da inserire in pagina
+						// Luce camera
+						if (json.Cam === "on")
+								document.LED_form.camera.checked = true;
+						else	document.LED_form.camera.checked = false;
+						// Luce cucina
+						if (json.Cuc === "on")
+								document.LED_form.cucina.checked = true;
+						else	document.LED_form.cucina.checked = false;
+						// Luce soggiorno
+						if (json.Sog === "on")
+								document.LED_form.soggiorno.checked = true;
+						else	document.LED_form.soggiorno.checked = false;
+						// Luce bagno
+						if (json.Bag === "on")
+								document.LED_form.bagno.checked = true;
+						else	document.LED_form.bagno.checked = false;
+						// Luce disimpegno
+						if (json.Dis === "on")
+								document.LED_form.disimpegno.checked = true;
+						else	document.LED_form.disimpegno.checked = false;
+						// Luce garage
+						if (json.Gar === "on")
+								document.LED_form.garage.checked = true;
+						else	document.LED_form.garage.checked = false;
+						// Temperatura
+						document.getElementById("temperatura").innerHTML = json.Temp;
+						// Luci crepuscolari
+						if (json.Crep === "on")
+								document.getElementById("crepuscolari").innerHTML = "LUCI CREPUSCOLARI ACCESE";
+						else	document.getElementById("crepuscolari").innerHTML = "LUCI CREPUSCOLARI SPENTE";
+						// Intrusione
+						if (json.Intr === "on")
+								{ document.getElementById("intrusione").innerHTML = "ALLARME ON";  Stato_intrusione = true; }
+						else 	{ document.getElementById("intrusione").innerHTML = "ALLARME OFF"; Stato_intrusione = false; }
+						// Rilevato movimento
+						if (json.Mov === "on")
+								document.getElementById("movimento").innerHTML = "INTRUSIONE!!!";
+						else	document.getElementById("movimento").innerHTML = "TUTTO OK";
+						// Riscaldamento
+						if (json.Risc === "on")
+								{ document.getElementById("riscaldamento").innerHTML = "RISCALDAMENTO ON";  Stato_riscaldamento = true; }
+						else 	{ document.getElementById("riscaldamento").innerHTML = "RISCALDAMENTO OFF"; Stato_riscaldamento = false; }
+						// Condizionamento
+						if (json.Cond === "on")
+								{ document.getElementById("condizionamento").innerHTML = "CONDIZIONAMENTO ON";  Stato_condizionamento = true; }
+						else	{ document.getElementById("condizionamento").innerHTML = "CONDIZIONAMENTO OFF"; Stato_condizionamento = false; }
+						// Serranda garage
+						if (json.Serr === "on")
+								{ document.getElementById("serranda").innerHTML = "SERRANDA GARAGE APERTA"; Stato_serranda = true; }
+						else	{ document.getElementById("serranda").innerHTML = "SERRANDA GARAGE CHIUSA"; Stato_serranda = false; }
+						// Cicalino
+						if (json.Buzz === "on")
+								{ document.getElementById("buzzer").innerHTML = "SPEGNI CICALINO";  Stato_buzzer = true; }
+						else	{ document.getElementById("buzzer").innerHTML = "ACCENDI CICALINO"; Stato_buzzer = false; }
+						// Allarme gas
+						if (json.Gas === "on")
+								document.getElementById("gas")[0].innerHTML = "ALLARME GAS!!!";
+						else	document.getElementById("gas")[0].innerHTML = "SENSORE GAS OK";
+					}
+				}
+			}
+			// Invia alla scheda la richiesta GET HTTP con l'azione/le azioni da eseguire
+			// Aggiungo un numero casuale alla richiesta per evitare che torni un file in cache
+			xhttp.open("GET", "ajax_inputs" + strL1 + strL2 + strL3 + strL4 + strL5 + strL6 + strS1 + strS2 + strS3 + strS4 + strS5 + strS6 + "&" + Math.random(), true);
+			xhttp.send(null);
+			setTimeout('GetArduinoIO()', 1000);
+			strL1 = ""; strL2 = ""; strL3 = ""; strL4 = ""; strL5 = ""; strL6 = "";
+			strS1 = ""; strS2 = ""; strS3 = ""; strS4 = ""; strS5 = ""; strS6 = "";
+		}
+		// Controllo le luci quando le checkbox sono checked/unchecked
+		function GetCheck() {
+			// Led camera
+			if (LED_form.camera.checked)
+					strL1 = "&Cam=1";
+			else	strL1 = "&Cam=0";
+			// Led cucina
+			if (LED_form.cucina.checked)
+					strL2 = "&Cuc=1";
+			else	strL2 = "&Cuc=0";
+			// Led soggiorno
+			if (LED_form.soggiorno.checked)
+					strL3 = "&Sog=1";
+			else	strL3 = "&Sog=0";
+			// Led bagno
+			if (LED_form.bagno.checked)
+					strL4 = "&Bag=1";
+			else	strL4 = "&Bag=0";
+			// Led disimpegno
+			if (LED_form.disimpegno.checked)
+					strL5 = "&Dis=1";
+			else	strL5 = "&Dis=0";
+			// Led garage
+			if (LED_form.garage.checked)
+					strL6 = "&Gar=1";
+			else	strL6 = "&Gar=0";
+		}
+		function GetIntrusione() {
+			Stato_intrusione = !Stato_intrusione;			// inverto il valore dello stato
+			strS1 = "&Intr=" + (Stato_intrusione+0);        // +0 per convertire true o false in 1 o 0
+		}
+		function GetRiscaldamento() {
+			Stato_riscaldamento = !Stato_riscaldamento;
+			strS2 = "&Risc=" + (Stato_riscaldamento+0);
+		}
+		function GetCondizionamento() {
+			Stato_condizionamento = !Stato_condizionamento;
+			strS3 = "&Cond=" + (Stato_condizionamento+0);
+		}
+		function GetSerranda() {
+			Stato_serranda = !Stato_serranda;
+			strS4 = "&Serr=" + (Stato_serranda+0);
+		}
+		function GetBuzzer() {
+			Stato_buzzer = !Stato_buzzer;
+			strS6 = "&Buzz=" + (Stato_buzzer+0);
+		}
+		function GetTermostato() {
+			valTerm = document.getElementById("select_val").value;
+			strS5="&Term=" + valTerm
+		}
+		function SpegniTutto() {
+			strL1="&Cam=0"; strL2="&Cuc=0"; strL3="&Sog=0"; strL4="&Bag=0"; strL5="&Dis=0"; strL6="&Gar=0";
+		}
+	</script>
+	<style>
+		body{	
+			margin:0px; padding:0px; width:100%; height:100%;
+			text-align:center; font-family: Georgia; background-color: #bcd5ff;
+		}
+		.Lucibox{	
+			border:3px solid rgb(0, 92, 230); text-align:center;
+			margin:0 auto; width:23%; font-size:18px;
+			border-radius:45px; border-top-width:0px; border-bottom-width:0px;
+			float: left; margin-left: 17%; margin-top: 5%; background-color: #bcd5ff;
+		}
+		.Sensoribox{	
+			border:3px solid rgb(0, 92, 230); 	text-align:center;
+			margin:0 auto; width:25%; font-size:18px;
+			border-radius:45px; border-top-width:0px; border-bottom-width:0px;
+			float: right; margin-right: 17%; margin-top: 1%; background-color: #bcd5ff;
+		}
+		#luc{
+			font-size: 30px; float: both; margin-top: 2%; color: rgb(0, 51, 128);
+		}
+		#sens{
+			font-size: 30px; float: both; color: rgb(0, 51, 128);
+		}
+		.bottone{
+			border-radius: 5px; width: 60%; height: 20%;
+			border:1px solid rgb(0, 92, 230); border-right-width:0px; border-left-width:0px;
+			background-color: white; font-family: Georgia;
+		}
+		.bottone:hover{
+			border:1px solid rgb(140, 12, 12); border-right-width:0px;
+			border-left-width:0px; transition-duration: 0.5s;	
+		}
+		.termostato{
+			float: left; margin-left: 20%; margin-bottom: 5%; margin-top: 5%;
+		}
+		.term{
+			float: both; margin-right: 20%; margin-bottom: 5%; margin-top: 5%;
+		}
+		#titolo{
+			font-size: 35px; color:darkblue;
+		}
+	</style>
+</head>
+<body onload="GetArduinoIO()">
+<div>
+	<p id="titolo">La casa del futuro</p>
+	<div class="Lucibox">
+		<p id="luc">LUCI</p>
+		<form id="check_LEDs" name="LED_form">
+			<input type="checkbox" name="camera" value="0" onclick="GetCheck()" />Camera<br /><br />
+			<input type="checkbox" name="cucina" value="0" onclick="GetCheck()" />Cucina<br /><br />
+			<input type="checkbox" name="soggiorno" value="0" onclick="GetCheck()" />Soggiorno<br /><br />
+			<input type="checkbox" name="bagno" value="0" onclick="GetCheck()" />Bagno<br /><br />
+			<input type="checkbox" name="disimpegno" value="0" onclick="GetCheck()" />Disimpegno<br /><br />
+			<input type="checkbox" name="garage" value="0" onclick="GetCheck()" />Garage<br /><br />
+			<button type="button" id="spegni_tutto" class="bottone" onclick="SpegniTutto()">SPEGNI TUTTE LE LUCI</button><br /><br />
+		</form>
+	</div>
+	<div class="Sensoribox">
+		<p id="sens">SENSORI</p>
+		<p>TEMPERATURA: <span id="temperatura">...</span></p>
+		<p><span id="crepuscolari">____</span></p>
+		<button type="button" id="intrusione" class="bottone" onclick="GetIntrusione()">ALLARME OFF</button>
+		<p><span id="movimento">____</span></p>
+		<button type="button" id="riscaldamento" class="bottone" onclick="GetRiscaldamento()">RISCALDAMENTO OFF</button></br></br>
+		<button type="button" id="condizionamento" class="bottone" onclick="GetCondizionamento()">CONDIZIONAMENTO OFF</button><br />
+		<p class="termostato">TERMOSTATO:
+		<form id="someform" class="term">
+			<select id="select_val" onChange="GetTermostato()">
+				<option>16</option><option>17</option><option>18</option><option>19</option>
+				<option>20</option><option>21</option><option>22</option><option selected="selected">23</option>
+				<option>24</option><option>25</option><option>26</option><option>27</option>
+				<option>28</option><option>29</option><option>30</option><option>31</option>
+				<option>32</option><option>33</option><option>34</option>
+			</select>
+		</form>
+		</p>
+		<button type="button" id="serranda" class="bottone" onclick="GetSerranda()">SERRANDA GARAGE CHIUSA</button><br /><br />
+		<button type="button" id="buzzer" class="bottone" onclick="GetBuzzer()">SPEGNI CICALINO</button><br />
+		<p><span id="gas">____</span></p>
+	</div>
+</div>
+</body>
+</html>
