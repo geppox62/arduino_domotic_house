@@ -2,6 +2,8 @@
 
 This is a prototype project made by my son and I for his graduation exam at the end of his school route.
 
+## Getting started
+
 This project involves the use of:
 - a small house (you can see it on the pictures)
 - an Arduino Mega ('cause of too many connections)
