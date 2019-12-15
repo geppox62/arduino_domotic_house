@@ -17,7 +17,7 @@ In the master branch you can see this files:
 - index.html : the simple web page run on the pc connected via an ethet cable
 
 Aftwerards I created new branches:
-arduino_with_images : I've addes the management of two small images on the web page
-fishino_xml  :  same project with the use of Fishino Mega instead of Arduino Mega (in this way we can use wi-fi)
-fishino_json :  same project buf the ajax protocol is done with json instead of xml file
+- arduino_with_images : I've addes the management of two small images on the web page
+- fishino_xml  :  same project with the use of Fishino Mega instead of Arduino Mega (in this way we can use wi-fi)
+- fishino_json :  same project buf the ajax protocol is done with json instead of xml file
 
