@@ -5,7 +5,7 @@ This is a prototype project made by my son and I for his graduation exam at the 
 ## Getting started
 
 This project involves the use of:
-- a small house (you can see it on the pictures)
+- a small house (you can see it in the images folder)
 - an Arduino Mega ('cause of too many connections)
 - an ethernet shield
 - sensors and actuators of different kind
