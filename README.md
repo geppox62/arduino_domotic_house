@@ -1,6 +1,6 @@
-# arduino_domotic_house
+# Arduino domotic house
 
-This is a prototype project made by my son and I for his graduation exam at the end of his school route.
+This is a prototype project made by my son (and a little help by me) for his graduation exam at the end of his school route.
 
 ## Getting started
 
@@ -22,4 +22,3 @@ Aftwerards I created three folders:
 - arduino_with_images : I've addes the management of two small images on the web page
 - fishino_xml  :  same project with the use of Fishino Mega instead of Arduino Mega (in this way we can use wi-fi)
 - fishino_json :  same project buf the ajax protocol is done with json instead of xml file
-
